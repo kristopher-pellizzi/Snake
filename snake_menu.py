@@ -50,6 +50,11 @@ def menu():
 		quitRect=quitSurf.get_rect()
 		quitRect.midtop=(normalRect.midbottom[0],normalRect.midbottom[1]+25)
 		playSurface.blit(quitSurf,quitRect)
+		byFont=pygame.font.Font('freesansbold.ttf',25)
+		bySurf=byFont.render('by Kristopher Pellizzi',True,greyColour)
+		byRect=bySurf.get_rect()
+		byRect.topleft=(titleRect.midbottom[0]+100,titleRect.midbottom[1])
+		playSurface.blit(bySurf,byRect)
 
 		padding=[-5,5]
 		if actualPos==None:
@@ -62,20 +67,22 @@ def menu():
 			if event.type==KEYDOWN:
 				if event.key==K_RIGHT:
 					print('right key pressed')
-					if actualPos[2]==normalRect.topright:
-						left=hardRect.left
-						right=hardRect.right
-					if actualPos[2]==easyRect.topright:
-						left=normalRect.left
-						right=normalRect.right
+					if actualPos!=None:
+						if actualPos[2]==normalRect.topright:
+							left=hardRect.left
+							right=hardRect.right
+						if actualPos[2]==easyRect.topright:
+							left=normalRect.left
+							right=normalRect.right
 				if event.key==K_LEFT:
 					print('left key pressed')
-					if actualPos[2]==normalRect.topright:
-						left=easyRect.left
-						right=easyRect.right
-					if actualPos[2]==hardRect.topright:
-						left=normalRect.left
-						right=normalRect.right
+					if actualPos!=None:
+						if actualPos[2]==normalRect.topright:
+							left=easyRect.left
+							right=easyRect.right
+						if actualPos[2]==hardRect.topright:
+							left=normalRect.left
+							right=normalRect.right
 				if event.key==K_DOWN:
 					print('down key pressed')
 					left=quitRect.left
@@ -107,7 +114,7 @@ def menu():
 
 		selectorPosition=[(left,bottom),(right,bottom),(right,top),(left,top)]
 		actualPos=selectorPosition
-		pygame.draw.lines(playSurface,whiteColour,True,selectorPosition,3)
-			
+		selectorPadding=[(left+padding[0],bottom+padding[1]),(right+padding[1],bottom+padding[1]),(right+padding[1],top+padding[0]),(left+padding[0],top+padding[0])]
+		pygame.draw.lines(playSurface,whiteColour,True,selectorPadding,3)
 		pygame.display.flip()	
 		fpsClock.tick(30)
