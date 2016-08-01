@@ -14,6 +14,7 @@ def play():
 	screen_width=640
 	screen_height=480
 	playSurface=pygame.display.set_mode((screen_width,screen_height))
+	playRect=playSurface.get_rect()
 
 	redColour=(255,0,0)
 	whiteColour=(255,255,255)
@@ -25,7 +26,8 @@ def play():
 	raspberrySpawned=1
 	direction='right'
 	changeDirection=direction
-
+	lines_pos=[playRect.topleft,(playRect.topright[0]-1,playRect.topright[1]),(playRect.bottomright[0]-1,playRect.bottomright[1]-1),(playRect.bottomleft[0],playRect.bottomleft[1]-1)]
+	
 	while True:
 		for event in pygame.event.get():
 			if event.type==QUIT:
@@ -72,6 +74,7 @@ def play():
 		for position in snakeSegments:
 			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))		#pygame.display.flip()
 		pygame.draw.rect(playSurface,redColour,Rect(raspberryPosition[0],raspberryPosition[1],20,20))
+		pygame.draw.lines(playSurface,whiteColour,True,lines_pos,1)
 		pygame.display.flip()
 		if snakePosition[0]<0 or snakePosition[0]>620 or snakePosition[1]<0 or snakePosition[1]>460:
 			snake_gameover.GameOver()
