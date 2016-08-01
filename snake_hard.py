@@ -26,8 +26,10 @@ def play():
 	raspberrySpawned=1
 	direction='right'
 	changeDirection=direction
+	points=0
 	raspCount=0
 	ticks=10
+	ticksLimit=25
 	lines_pos=[playRect.topleft,(playRect.topright[0]-1,playRect.topright[1]),(playRect.bottomright[0]-1,playRect.bottomright[1]-1),(playRect.bottomleft[0],playRect.bottomleft[1]-1)]
 
 	while True:
@@ -66,6 +68,7 @@ def play():
 		if snakePosition==raspberryPosition:
 			raspberrySpawned=0
 			raspCount+=1
+			points+=1
 		else:
 			snakeSegments.pop()
 		if raspberrySpawned==0:
@@ -75,16 +78,23 @@ def play():
 		raspberrySpawned=1
 		playSurface.fill(blackColour)
 		for position in snakeSegments:
-			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))		#pygame.display.flip()
+			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))
 		pygame.draw.rect(playSurface,redColour,Rect(raspberryPosition[0],raspberryPosition[1],20,20))
 		pygame.draw.lines(playSurface,whiteColour,True,lines_pos)
+
+		font=pygame.font.Font('freesansbold.ttf',30)
+		countDisp=font.render(str(points),True,greyColour)
+		countRect=countDisp.get_rect()
+		countRect.topleft=(playRect.topleft[0]+5,playRect.topleft[1]+5)
+		playSurface.blit(countDisp,countRect)
+
 		pygame.display.flip()
 		if snakePosition[0]<0 or snakePosition[0]>620 or snakePosition[1]<0 or snakePosition[1]>460:
 			snake_gameover.GameOver()
 		for body in snakeSegments[1:]:
 			if body==snakePosition:
 				snake_gameover.GameOver()	
-		if raspCount>0 and raspCount%10==0:
+		if raspCount>0 and raspCount%10==0 and ticks<ticksLimit:
 			ticks+=2.5
 			raspCount=0
 		fpsClock.tick(ticks)
