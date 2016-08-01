@@ -91,4 +91,4 @@ def play():
 			if body==snakePosition:
 				snake_gameover.GameOver()	
 
-		fpsClock.tick(10)
+		fpsClock.tick(15)
