@@ -14,7 +14,7 @@ def menu():
 	greyColour=(150,150,150)
 	whiteColour=(255,255,255)
 	fpsClock=pygame.time.Clock()
-	actualPos=None
+	selectorPosition=None
 	pygame.display.set_caption('Snake')
 
 	while True:
@@ -57,7 +57,7 @@ def menu():
 		playSurface.blit(bySurf,byRect)
 
 		padding=[-5,5]
-		if actualPos==None:
+		if selectorPosition==None:
 			left=normalRect.left
 			right=normalRect.right
 			top=normalRect.top
@@ -67,20 +67,20 @@ def menu():
 			if event.type==KEYDOWN:
 				if event.key==K_RIGHT:
 					print('right key pressed')
-					if actualPos!=None:
-						if actualPos[2]==normalRect.topright:
+					if selectorPosition!=None:
+						if selectorPosition[2]==normalRect.topright:
 							left=hardRect.left
 							right=hardRect.right
-						if actualPos[2]==easyRect.topright:
+						if selectorPosition[2]==easyRect.topright:
 							left=normalRect.left
 							right=normalRect.right
 				if event.key==K_LEFT:
 					print('left key pressed')
-					if actualPos!=None:
-						if actualPos[2]==normalRect.topright:
+					if selectorPosition!=None:
+						if selectorPosition[2]==normalRect.topright:
 							left=easyRect.left
 							right=easyRect.right
-						if actualPos[2]==hardRect.topright:
+						if selectorPosition[2]==hardRect.topright:
 							left=normalRect.left
 							right=normalRect.right
 				if event.key==K_DOWN:
@@ -113,7 +113,6 @@ def menu():
 					sys.exit()
 
 		selectorPosition=[(left,bottom),(right,bottom),(right,top),(left,top)]
-		actualPos=selectorPosition
 		selectorPadding=[(left+padding[0],bottom+padding[1]),(right+padding[1],bottom+padding[1]),(right+padding[1],top+padding[0]),(left+padding[0],top+padding[0])]
 		pygame.draw.lines(playSurface,whiteColour,True,selectorPadding,3)
 		pygame.display.flip()	
