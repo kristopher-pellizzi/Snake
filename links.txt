@@ -1,0 +1,3 @@
+http://www.python.it/download/
+
+http://pygame.org/download.shtml
