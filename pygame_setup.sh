@@ -13,3 +13,4 @@ echo "\n###########################\n"
 echo "Installing pygame..."
 pip3 install hg+http://bitbucket.org/pygame/pygame
 echo "pygame installed successfully"!
+exit
