@@ -26,6 +26,18 @@ def play():
 	raspberrySpawned=1
 	direction='right'
 	changeDirection=direction
+	points=0
+	newbest=0
+	f_handler=open('game_stats.txt','r')	
+	f_content=f_handler.readlines()
+	for line in f_content:
+		line_list=line.split('=')
+		if line_list[0]=='normal_best':
+			if line_list[1]=='\n':
+				best=0
+			else:
+				best=line_list[1]
+	f_handler.close()
 	lines_pos=[playRect.topleft,(playRect.topright[0]-1,playRect.topright[1]),(playRect.bottomright[0]-1,playRect.bottomright[1]-1),(playRect.bottomleft[0],playRect.bottomleft[1]-1)]
 	
 	while True:
@@ -63,6 +75,7 @@ def play():
 		snakeSegments.insert(0,list(snakePosition))
 		if snakePosition==raspberryPosition:
 			raspberrySpawned=0
+			points+=1
 		else:
 			snakeSegments.pop()
 		if raspberrySpawned==0:
@@ -75,11 +88,58 @@ def play():
 			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))		#pygame.display.flip()
 		pygame.draw.rect(playSurface,redColour,Rect(raspberryPosition[0],raspberryPosition[1],20,20))
 		pygame.draw.lines(playSurface,whiteColour,True,lines_pos,1)
+		
+
+		font=pygame.font.Font('freesansbold.ttf',30)
+		countDisp=font.render(str(points),True,greyColour)
+		countRect=countDisp.get_rect()
+		countRect.topleft=(playRect.topleft[0]+5,playRect.topleft[1]+5)
+		playSurface.blit(countDisp,countRect)
+
+		if (best==0 or points>int(best)) and points>0 :
+			bestDisp=font.render('NEW BEST!',True,greyColour)
+			bestRect=bestDisp.get_rect()
+			bestRect.topleft=(countRect.topright[0]+5,countRect.topright[1])
+			playSurface.blit(bestDisp,bestRect)
+			newbest=points
+
 		pygame.display.flip()
 		if snakePosition[0]<0 or snakePosition[0]>620 or snakePosition[1]<0 or snakePosition[1]>460:
+			f_handler=open('game_stats.txt','w')
+			for line in f_content:
+				line_list=line.split('=')
+				if line_list[0]=='normal_best':
+					if newbest!=0:
+						line_list[1]=str(newbest)
+					else:
+						line_list[1]=str(best)
+				if line_list[0]=='game_played':
+					line_list[1]=str(int(line_list[1])+1)
+				if '\n' in line_list[1]:
+					stat_str=line_list[0]+'='+line_list[1]
+				else:
+					stat_str=line_list[0]+'='+line_list[1]+'\n'
+				f_handler.write(stat_str)
+			f_handler.close()
 			snake_gameover.GameOver()
 		for body in snakeSegments[1:]:
 			if body==snakePosition:
+				f_handler=open('game_stats.txt','w')
+				for line in f_content:
+					line_list=line.split('=')
+					if line_list[0]=='normal_best':
+						if newbest!=0:
+							line_list[1]=str(newbest)
+						else:
+							line_list[1]=str(best)
+					if line_list[0]=='game_played':
+						line_list[1]=str(int(line_list[1])+1)
+					if '\n' in line_list[1]:
+						stat_str=line_list[0]+'='+line_list[1]
+					else:
+						stat_str=line_list[0]+'='+line_list[1]+'\n'
+					f_handler.write(stat_str)
+				f_handler.close()
 				snake_gameover.GameOver()	
 
 		fpsClock.tick(15)

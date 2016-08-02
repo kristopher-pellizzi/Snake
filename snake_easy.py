@@ -25,8 +25,8 @@ def play():
 	direction='right'
 	changeDirection=direction
 	points=0
-	f_handler=open('game_stats.txt','r')
-	
+	newbest=0
+	f_handler=open('game_stats.txt','r')	
 	f_content=f_handler.readlines()
 	for line in f_content:
 		line_list=line.split('=')
@@ -121,10 +121,13 @@ def play():
 				for line in f_content:
 					line_list=line.split('=')
 					if line_list[0]=='easy_best':
-						line_list[1]=str(newbest)
+						if newbest!=0:
+							line_list[1]=str(newbest)
+						else:
+							line_list[1]=str(best)
 					if line_list[0]=='game_played':
 						line_list[1]=str(int(line_list[1])+1)
-					if line_list[1]=='\n':
+					if '\n' in line_list[1]:
 						stat_str=line_list[0]+'='+line_list[1]
 					else:
 						stat_str=line_list[0]+'='+line_list[1]+'\n'
