@@ -4,7 +4,7 @@ LINUX:
 
 Installazione:
 Da terminale lanciare i comandi:
--'sudo apt-get install python'
+-'sudo apt-get install python', se richiesta, inserire la password dell'utente connesso
 -'sudo apt-get install python-pygame'
 
 Gioco:
