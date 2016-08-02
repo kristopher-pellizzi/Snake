@@ -28,4 +28,19 @@ Da terminale lanciare i comandi:
 -'python3 snake.py'
 
 
-Per ottenere maggiori informazioni sull'installazione di pygame e per sapere come installare pygame su sistemi operativi Windows visita la pagina http://www.pygame.org/download.shtml
+
+
+
+WINDOWS:
+
+Installazione:
+
+-Installare una versione di python dal sito http://www.python.it/download/
+-Installare la corrispondente versione di pygame dal sito http://pygame.org/download.shtml
+
+Gioco:
+
+Fare doppio click sul file snake.py presente nella cartella del gioco
+
+
+Per ottenere maggiori informazioni e dettagli sull'installazione di pygame visita la pagina http://www.pygame.org/download.shtml
