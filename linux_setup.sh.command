@@ -6,3 +6,4 @@ echo "INSERIRE LA PASSWORD DELL'UTENTE: \n"
 echo "\n#########################\n"
 echo "INSTALLO PYGAME..."
 echo "\n#########################\n"
+exit
