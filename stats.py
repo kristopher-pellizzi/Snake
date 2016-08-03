@@ -81,6 +81,8 @@ def see():
 									terminal='\n'
 								fh.write(line_list[0]+'='+terminal)
 							fh.close()
+				if event.key==K_ESCAPE:
+					snake_menu.menu()
 				if event.key==K_LEFT:
 					left=rstRect.left
 					right=rstRect.right
@@ -91,6 +93,9 @@ def see():
 					right=quitRect.right
 					top=quitRect.top
 					bottom=quitRect.bottom
+			if event.type==QUIT:
+				pygame.quit()
+				sys.exit()
 
 		selectorPosition=[(left,bottom),(right,bottom),(right,top),(left,top)]
 		selectorPadding=[(left-5,bottom+5),(right+5,bottom+5),(right+5,top-5),(left-5,top-5)]
