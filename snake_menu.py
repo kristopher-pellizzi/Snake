@@ -4,7 +4,7 @@
 
 import sys,time,random,pygame
 from pygame.locals import *
-import snake_normal,snake_easy,snake_hard
+import snake_normal,snake_easy,snake_hard, stats
 
 def menu():
 
@@ -48,8 +48,12 @@ def menu():
 		playSurface.blit(hardSurf,hardRect)
 		quitSurf=normal.render('Esci',True,greyColour)
 		quitRect=quitSurf.get_rect()
-		quitRect.midtop=(normalRect.midbottom[0],normalRect.midbottom[1]+25)
+		quitRect.midtop=(normalRect.topright[0]+20,normalRect.topright[1]+50)
 		playSurface.blit(quitSurf,quitRect)
+		statSurf=normal.render('Statistiche',True,greyColour)
+		statRect=statSurf.get_rect()
+		statRect.midtop=(normalRect.topleft[0]-20,normalRect.topleft[1]+50)
+		playSurface.blit(statSurf,statRect)
 		byFont=pygame.font.Font('freesansbold.ttf',25)
 		bySurf=byFont.render('by Kristopher Pellizzi',True,greyColour)
 		byRect=bySurf.get_rect()
@@ -74,6 +78,9 @@ def menu():
 						if selectorPosition[2]==easyRect.topright:
 							left=normalRect.left
 							right=normalRect.right
+						if selectorPosition[2]==statRect.topright:
+							left=quitRect.left
+							right=quitRect.right
 				if event.key==K_LEFT:
 					print('left key pressed')
 					if selectorPosition!=None:
@@ -83,12 +90,15 @@ def menu():
 						if selectorPosition[2]==hardRect.topright:
 							left=normalRect.left
 							right=normalRect.right
+						if selectorPosition[2]==quitRect.topright:
+							left=statRect.left
+							right=statRect.right
 				if event.key==K_DOWN:
 					print('down key pressed')
-					left=quitRect.left
-					right=quitRect.right
-					bottom=quitRect.bottom
-					top=quitRect.top
+					left=statRect.left
+					right=statRect.right
+					bottom=statRect.bottom
+					top=statRect.top
 				if event.key==K_UP:
 					print('up key pressed')
 					left=normalRect.left
@@ -105,6 +115,9 @@ def menu():
 					if selectorPosition[2]==hardRect.topright:
 						playSurface.fill(blackColour)
 						snake_hard.play()
+					if selectorPosition[2]==statRect.topright:
+						playSurface.fill(blackColour)
+						stats.see()
 					if selectorPosition[2]==quitRect.topright:
 						pygame.quit()
 						sys.exit()
