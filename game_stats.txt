@@ -1,4 +1,0 @@
-easy_best=
-normal_best=
-hard_best=
-game_played=0
