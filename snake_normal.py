@@ -115,41 +115,11 @@ def play():
 
 		pygame.display.flip()
 		if snakePosition[0]<0 or snakePosition[0]>620 or snakePosition[1]<0 or snakePosition[1]>460:
-			f_handler=open('game_stats.txt','w')
-			for line in f_content:
-				line_list=line.split('=')
-				if line_list[0]=='normal_best':
-					if newbest!=0:
-						line_list[1]=str(newbest)
-					else:
-						line_list[1]=str(best)
-				if line_list[0]=='game_played':
-					line_list[1]=str(int(line_list[1])+1)
-				if '\n' in line_list[1]:
-					stat_str=line_list[0]+'='+line_list[1]
-				else:
-					stat_str=line_list[0]+'='+line_list[1]+'\n'
-				f_handler.write(stat_str)
-			f_handler.close()
+			reg_stats.reg('normal_best',best,newbest,f_content)
 			snake_gameover.GameOver()
 		for body in snakeSegments[1:]:
 			if body==snakePosition:
-				f_handler=open('game_stats.txt','w')
-				for line in f_content:
-					line_list=line.split('=')
-					if line_list[0]=='normal_best':
-						if newbest!=0:
-							line_list[1]=str(newbest)
-						else:
-							line_list[1]=str(best)
-					if line_list[0]=='game_played':
-						line_list[1]=str(int(line_list[1])+1)
-					if '\n' in line_list[1]:
-						stat_str=line_list[0]+'='+line_list[1]
-					else:
-						stat_str=line_list[0]+'='+line_list[1]+'\n'
-					f_handler.write(stat_str)
-				f_handler.close()
+				reg_stats.reg('normal_best',best,newbest,f_content)
 				snake_gameover.GameOver()	
 
 		fpsClock.tick(15)
