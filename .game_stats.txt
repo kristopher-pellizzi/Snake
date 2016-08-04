@@ -1,4 +1,4 @@
-easy_best=7
+easy_best=
 normal_best=
 hard_best=
-game_played=8
+game_played=0
