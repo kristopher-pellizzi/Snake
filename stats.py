@@ -16,7 +16,7 @@ def see():
 	selectorPosition=None
 
 	while True:
-		fh=open('game_stats.txt','r')
+		fh=open('.game_stats.txt','r')
 		f_content=fh.readlines()
 		stat_list=[]
 		for line in f_content:
@@ -72,7 +72,7 @@ def see():
 						if selectorPosition[2]==quitRect.topright:
 							snake_menu.menu()
 						if selectorPosition[2]==rstRect.topright:
-							fh=open('game_stats.txt','w')
+							fh=open('.game_stats.txt','w')
 							for line in f_content:
 								line_list=line.split('=')
 								if line_list[0]=='game_played':
