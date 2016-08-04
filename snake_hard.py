@@ -4,7 +4,7 @@
 
 import pygame, sys, time, random
 from pygame.locals import *
-import snake_gameover
+import snake_gameover, lvls, reg_stats
 
 def play():
 
@@ -20,8 +20,8 @@ def play():
 	whiteColour=(255,255,255)
 	blackColour=(0,0,0)
 	greyColour=(150,150,150)
-	snakePosition=[100,100]
-	snakeSegments=[[100,100],[80,100],[60,100]]
+	snakePosition=[320,240]
+	snakeSegments=[[320,240],[300,240],[280,240]]
 	raspberryPosition=[300,300]
 	raspberrySpawned=1
 	direction='right'
@@ -31,7 +31,11 @@ def play():
 	raspCount=0
 	ticks=10
 	ticksLimit=25
-	f_handler=open('game_stats.txt','r')	
+	f_handler=open('.lvl_chosen.txt','r')
+	f_content=f_handler.read()
+	lvl=int(f_content)
+	f_handler.close()
+	f_handler=open('.game_stats.txt','r')	
 	f_content=f_handler.readlines()
 	for line in f_content:
 		line_list=line.split('=')
@@ -88,6 +92,12 @@ def play():
 			raspberryPosition=[x*20,y*20]
 		raspberrySpawned=1
 		playSurface.fill(blackColour)
+		if lvl!=0:
+			if lvl==1:
+				lvlSurf=lvls.lvl1(snakePosition,'hard_best',best,newbest,f_content)
+			lvlRect=lvlSurf.get_rect()
+			lvlRect.midtop=playRect.midtop
+			playSurface.blit(lvlSurf,lvlRect)
 		for position in snakeSegments:
 			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))
 		pygame.draw.rect(playSurface,redColour,Rect(raspberryPosition[0],raspberryPosition[1],20,20))
@@ -108,41 +118,11 @@ def play():
 
 		pygame.display.flip()
 		if snakePosition[0]<0 or snakePosition[0]>620 or snakePosition[1]<0 or snakePosition[1]>460:
-			f_handler=open('game_stats.txt','w')
-			for line in f_content:
-				line_list=line.split('=')
-				if line_list[0]=='hard_best':
-					if newbest!=0:
-						line_list[1]=str(newbest)
-					else:
-						line_list[1]=str(best)
-				if line_list[0]=='game_played':
-					line_list[1]=str(int(line_list[1])+1)
-				if '\n' in line_list[1]:
-					stat_str=line_list[0]+'='+line_list[1]
-				else:
-					stat_str=line_list[0]+'='+line_list[1]+'\n'
-				f_handler.write(stat_str)
-			f_handler.close()
+			reg_stats.reg('hard_best',best,newbest,f_content)
 			snake_gameover.GameOver()
 		for body in snakeSegments[1:]:
 			if body==snakePosition:
-				f_handler=open('game_stats.txt','w')
-				for line in f_content:
-					line_list=line.split('=')
-					if line_list[0]=='hard_best':
-						if newbest!=0:
-							line_list[1]=str(newbest)
-						else:
-							line_list[1]=str(best)
-					if line_list[0]=='game_played':
-						line_list[1]=str(int(line_list[1])+1)
-					if '\n' in line_list[1]:
-						stat_str=line_list[0]+'='+line_list[1]
-					else:
-						stat_str=line_list[0]+'='+line_list[1]+'\n'
-					f_handler.write(stat_str)
-				f_handler.close()
+				reg_stats.reg('hard_best',best,newbest,f_content)
 				snake_gameover.GameOver()	
 		if raspCount>0 and raspCount%10==0 and ticks<ticksLimit:
 			ticks+=2.5
