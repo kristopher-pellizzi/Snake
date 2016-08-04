@@ -91,9 +91,11 @@ def play():
 		if lvl!=0:
 			if lvl==1:
 				lvlSurf=lvls.lvl1(snakePosition,'normal_best',best,newbest,f_content)
-			lvlRect=lvlSurf.get_rect()
-			lvlRect.midtop=playRect.midtop
-			playSurface.blit(lvlSurf,lvlRect)
+			for rect in lvlSurf:
+				pygame.draw.rect(playSurface,whiteColour,rect)
+			# lvlRect=lvlSurf.get_rect()
+			# lvlRect.midtop=playRect.midtop
+			# playSurface.blit(lvlSurf,lvlRect)
 		for position in snakeSegments:
 			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))		#pygame.display.flip()
 		pygame.draw.rect(playSurface,redColour,Rect(raspberryPosition[0],raspberryPosition[1],20,20))

@@ -4,7 +4,8 @@
 
 import pygame, sys, time, random
 from pygame.locals import *
-import snake_gameover, lvls, reg_stats
+import snake_gameover, reg_stats, lvls
+
 def play():
 	fpsClock=pygame.time.Clock()
 
@@ -87,9 +88,11 @@ def play():
 		if lvl!=0:
 			if lvl==1:
 				lvlSurf=lvls.lvl1(snakePosition,'easy_best',best,newbest,f_content)
-			lvlRect=lvlSurf.get_rect()
-			lvlRect.midtop=playRect.midtop
-			playSurface.blit(lvlSurf,lvlRect)
+			for rect in lvlSurf:
+				pygame.draw.rect(playSurface,whiteColour,rect)
+			# lvlRect=lvlSurf.get_rect()
+			# lvlRect.midtop=playRect.midtop
+			# playSurface.blit(lvlSurf,lvlRect)
 		for position in snakeSegments:
 			if position[0]<0:
 				position[0]=620

@@ -119,24 +119,25 @@ def menu():
 					top=normalRect.top
 					bottom=normalRect.bottom
 				if event.key==K_RETURN:
-					if selectorPosition[2]==easyRect.topright:
-						playSurface.fill(blackColour)
-						snake_easy.play()
-					if selectorPosition[2]==normalRect.topright:
-						playSurface.fill(blackColour)
-						snake_normal.play()
-					if selectorPosition[2]==hardRect.topright:
-						playSurface.fill(blackColour)
-						snake_hard.play()
-					if selectorPosition[2]==statRect.topright:
-						playSurface.fill(blackColour)
-						stats.see()
-					if selectorPosition[2]==lvlRect.topright:
-						playSurface.fill(blackColour)
-						choose_lvl.lvls()
-					if selectorPosition[2]==quitRect.topright:
-						pygame.quit()
-						sys.exit()
+					if selectorPosition!=None:
+						if selectorPosition[2]==easyRect.topright:
+							playSurface.fill(blackColour)
+							snake_easy.play()
+						if selectorPosition[2]==normalRect.topright:
+							playSurface.fill(blackColour)
+							snake_normal.play()
+						if selectorPosition[2]==hardRect.topright:
+							playSurface.fill(blackColour)
+							snake_hard.play()
+						if selectorPosition[2]==statRect.topright:
+							playSurface.fill(blackColour)
+							stats.see()
+						if selectorPosition[2]==lvlRect.topright:
+							playSurface.fill(blackColour)
+							choose_lvl.lvls()
+						if selectorPosition[2]==quitRect.topright:
+							pygame.quit()
+							sys.exit()
 				if event.key==K_ESCAPE:
 					pygame.quit()
 					sys.exit()
