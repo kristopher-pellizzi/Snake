@@ -20,20 +20,26 @@ def play():
 	whiteColour=(255,255,255)
 	blackColour=(0,0,0)
 	greyColour=(150,150,150)
-	snakePosition=[320,240]
-	snakeSegments=[[320,240],[300,240],[280,240]]
-	raspberryPosition=[300,300]
+	raspberryPosition=[random.randrange(0,32)*20,random.randrange(0,24)*20]
 	raspberrySpawned=1
-	direction='right'
-	changeDirection=direction
 	points=0
 	newbest=0
 	f_handler=open('.lvl_chosen.txt','r')
 	f_content=f_handler.read()
 	lvl=int(f_content)
+	if lvl==2:
+		snakePosition=[20,240]
+		snakeSegments=[(20,240),(20,220),(20,200)]
+		direction='down'
+	else:
+		snakePosition=[320,240]
+		snakeSegments=[[320,240],[300,240],[280,240]]
+		direction='right'
+	changeDirection=direction
 	f_handler.close()
 	f_handler=open('.game_stats.txt','r')	
 	f_content=f_handler.readlines()
+	lvlSurf=[]
 	for line in f_content:
 		line_list=line.split('=')
 		if line_list[0]=='normal_best':
@@ -77,6 +83,18 @@ def play():
 		if direction=='down':
 			snakePosition[1]+=20
 		snakeSegments.insert(0,list(snakePosition))
+		playSurface.fill(blackColour)
+		if lvl!=0:
+			if lvl==1:
+				lvlSurf=lvls.lvl1()
+			if lvl==2:
+				lvlSurf=lvls.lvl2()
+			if lvl==3:
+				lvlSurf=lvls.lvl3()
+			if lvl==4:
+				lvlSurf=lvls.lvl4()
+			for rect in lvlSurf:
+				pygame.draw.rect(playSurface,whiteColour,rect)
 		if snakePosition==raspberryPosition:
 			raspberrySpawned=0
 			points+=1
@@ -86,16 +104,13 @@ def play():
 			x=random.randrange(0,32)
 			y=random.randrange(0,24)
 			raspberryPosition=[x*20,y*20]
-		raspberrySpawned=1
-		playSurface.fill(blackColour)
-		if lvl!=0:
-			if lvl==1:
-				lvlSurf=lvls.lvl1(snakePosition,'normal_best',best,newbest,f_content)
-			for rect in lvlSurf:
-				pygame.draw.rect(playSurface,whiteColour,rect)
-			# lvlRect=lvlSurf.get_rect()
-			# lvlRect.midtop=playRect.midtop
-			# playSurface.blit(lvlSurf,lvlRect)
+			raspberryRect=Rect(raspberryPosition[0],raspberryPosition[1],20,20)
+			while raspberryRect.collidelist(lvlSurf)!=-1:
+				x=random.randrange(0,32)
+				y=random.randrange(0,24)
+				raspberryPosition=[x*20,y*20]
+				raspberryRect=Rect(raspberryPosition[0],raspberryPosition[1],20,20)
+			raspberrySpawned=1
 		for position in snakeSegments:
 			pygame.draw.rect(playSurface,whiteColour,Rect(position[0],position[1],20,20))		#pygame.display.flip()
 		pygame.draw.rect(playSurface,redColour,Rect(raspberryPosition[0],raspberryPosition[1],20,20))
@@ -116,6 +131,12 @@ def play():
 			newbest=points
 
 		pygame.display.flip()
+		
+		snakeHead=Rect(snakePosition[0],snakePosition[1],20,20)
+		if snakeHead.collidelist(lvlSurf)!=-1:
+			reg_stats.reg('normal_best',best,newbest,f_content)
+			snake_gameover.GameOver()
+
 		if snakePosition[0]<0 or snakePosition[0]>620 or snakePosition[1]<0 or snakePosition[1]>460:
 			reg_stats.reg('normal_best',best,newbest,f_content)
 			snake_gameover.GameOver()
